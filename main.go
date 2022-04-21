@@ -2,14 +2,17 @@ package healthcheckmodule
 
 import (
 	"fmt"
-	"os"
-	"strings"
-
-	"github.com/silverspell/commonlibs"
 )
 
-func DiscoverEnv() []string {
-	discoveredEnvs := commonlibs.Filter(os.Environ(), func(item string) bool { return strings.HasPrefix(item, "MRT_") })
-	fmt.Printf("Discovered envs %+v\n", discoveredEnvs)
-	return discoveredEnvs
+func example() {
+	envs := DiscoverEnv("MRT_")
+	fmt.Printf("Discovered: %+v\n", envs)
+
+	reason, err := DoHealthCheck(envs)
+	if err != nil {
+		fmt.Printf("%s\n", reason)
+		Exit(127)
+	}
+	fmt.Println("Exiting normally")
+	Exit(0)
 }
