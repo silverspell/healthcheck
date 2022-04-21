@@ -1,4 +1,4 @@
-module github.com/silverspell/hc
+module github.com/silverspell/healthcheck
 
 go 1.18
 
