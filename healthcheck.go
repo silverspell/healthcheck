@@ -33,11 +33,12 @@ func DoHealthCheck(types []string) (string, error) {
 			fmt.Println("unknown")
 			err = nil
 		}
+
+		if err != nil {
+			return err.Error(), err
+		}
 	}
 
-	if err != nil {
-		return err.Error(), err
-	}
 	return "", nil
 }
 
