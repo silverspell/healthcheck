@@ -17,7 +17,7 @@ func (r *RabbitConnection) Connect() error {
 
 	go rabbitmodule.ConnectSubscriber(receiveChan, uniqueChan.String())
 	go rabbitmodule.ConnectPublisher(sendChan, uniqueChan.String())
-	var err error
+
 	go func(rc chan string) {
 		t := time.NewTimer(2 * time.Second)
 		<-t.C
