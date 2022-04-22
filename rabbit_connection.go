@@ -25,12 +25,10 @@ func (r *RabbitConnection) Connect() error {
 	}(receiveChan)
 
 	sendChan <- "Are you alive"
-
-	for {
-		msg := <-receiveChan
-		if msg == "timeout" {
-			return fmt.Errorf("timeout")
-		}
-		return nil
+	msg := <-receiveChan
+	if msg == "timeout" {
+		return fmt.Errorf("timeout")
 	}
+	return nil
+
 }
