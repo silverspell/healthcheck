@@ -18,17 +18,19 @@ func (r *RabbitConnection) Connect() error {
 	go rabbitmodule.ConnectSubscriber(receiveChan, uniqueChan.String())
 	go rabbitmodule.ConnectPublisher(sendChan, uniqueChan.String())
 	var err error
+	go func(rc chan string) {
+		t := time.NewTimer(2 * time.Second)
+		<-t.C
+		rc <- "timeout"
+	}(receiveChan)
+
 	sendChan <- "Are you alive"
-	loop := true
-	for loop {
-		select {
-		case <-time.After(time.Duration(1 * time.Second)):
-			err = fmt.Errorf("rabbit timeout")
-			loop = false
-		case <-receiveChan:
-			err = nil
-			loop = false
+
+	for {
+		msg := <-receiveChan
+		if msg == "timeout" {
+			return fmt.Errorf("timeout")
 		}
+		return nil
 	}
-	return err
 }
