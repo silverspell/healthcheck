@@ -16,6 +16,9 @@ func (r *RabbitConnection) Connect() error {
 	sendChan, receiveChan := make(chan string), make(chan string)
 
 	go rabbitmodule.ConnectSubscriber(receiveChan, uniqueChan.String())
+	fmt.Println("Waiting 3 seconds for subscriber")
+	t := time.NewTimer(3 * time.Second)
+	<-t.C
 	go func(rc chan string) {
 		t := time.NewTimer(10 * time.Second)
 		<-t.C
