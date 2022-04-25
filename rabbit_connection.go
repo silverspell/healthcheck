@@ -17,7 +17,7 @@ func (r *RabbitConnection) Connect() error {
 
 	go rabbitmodule.ConnectSubscriber(receiveChan, uniqueChan.String())
 	go func(rc chan string) {
-		t := time.NewTimer(2 * time.Second)
+		t := time.NewTimer(10 * time.Second)
 		<-t.C
 		rc <- "timeout"
 	}(receiveChan)
